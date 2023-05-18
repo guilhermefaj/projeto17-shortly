@@ -7,7 +7,7 @@ export async function authValidation(req, res, next) {
     if (!token) return res.status(401).send("Token não encontrado");
 
     try {
-        const auth = await db.query("SELECT * FROM sessoes WHERE token = $1"
+        const auth = await db.query("SELECT * FROM sessions WHERE token = $1"
             , [token]);
 
         const session = auth.rows[0];
