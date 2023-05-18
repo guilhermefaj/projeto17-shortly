@@ -86,3 +86,38 @@ export async function openUrl(req, res) {
         res.status(500).send("Erro ao abrir a URL encurtada");
     }
 }
+
+
+export async function deleteUrl(req, res) {
+    const { id } = req.params;
+    const userId = res.locals.session.userId;
+
+    try {
+        const result = await db.query(
+            `SELECT "userId" 
+             FROM links 
+             WHERE "linkId" = $1`,
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).send("URL encurtada não encontrada");
+        }
+
+        const { userId: linkUserId } = result.rows[0];
+
+        if (linkUserId !== userId) {
+            return res.status(401).send("A URL encurtada não pertence ao usuário");
+        }
+
+        await db.query(
+            `DELETE FROM links 
+             WHERE "linkId" = $1`,
+            [id]
+        );
+
+        res.status(204).end();
+    } catch (err) {
+        res.status(500).send("Erro ao excluir a URL encurtada");
+    }
+}
