@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { db } from "../database/database.connection.js";
 import { nanoid } from "nanoid";
 
@@ -47,5 +48,41 @@ export async function getUrl(req, res) {
         res.status(200).send({ id: linkId, shortUrl: shortCode, url });
     } catch (err) {
         res.status(500).send("Erro ao obter a URL encurtada");
+    }
+}
+
+
+export async function openUrl(req, res) {
+    const { shortUrl } = req.params;
+
+    try {
+        const linkResult = await db.query(
+            `SELECT "url", "linkId" 
+             FROM links 
+             WHERE "shortCode" = $1`,
+            [shortUrl]
+        );
+
+        if (linkResult.rows.length === 0) {
+            return res.status(404).send("URL encurtada não encontrada");
+        }
+
+        const { url } = linkResult.rows[0];
+
+        const clickDate = dayjs().format('YYYY-MM-DD')
+        const { linkId } = linkResult.rows[0];
+        const ipAddress = req.ip;
+        const referer = req.headers.referer;
+
+        await db.query(
+            `INSERT INTO clicks 
+             ("linkId", "clickDate", "ipAddress", "referer")
+             VALUES ($1, $2, $3, $4)`,
+            [linkId, clickDate, ipAddress, referer]
+        );
+
+        res.redirect(301, url);
+    } catch (err) {
+        res.status(500).send("Erro ao abrir a URL encurtada");
     }
 }
