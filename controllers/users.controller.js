@@ -22,13 +22,10 @@ export async function signUp(req, res) {
 
 
 export async function signIn(req, res) {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     try {
         const user = res.locals.user;
-
-        const passwordCorrect = bcrypt.compareSync(password, user.password);
-        if (!passwordCorrect) return res.status(401).send("Senha incorreta");
 
         const token = uuid();
 
@@ -102,8 +99,6 @@ export async function getUserProfile(req, res) {
             visitCount: totalVisits,
             shortenedUrls,
         };
-
-        console.log(userProfile);
 
         res.status(200).send(userProfile);
     } catch (err) {
