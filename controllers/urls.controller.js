@@ -30,19 +30,9 @@ export async function postUrl(req, res) {
 
 
 export async function getUrl(req, res) {
-    const id = req.params.id;
 
     try {
-        const result = await db.query(
-            `SELECT "linkId", "shortCode", "url" 
-             FROM links 
-             WHERE "linkId" = $1`,
-            [id]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).send("URL encurtada não encontrada");
-        }
+        const result = res.locals.result;
 
         const { linkId, shortCode, url } = result.rows[0];
         res.status(200).send({ id: linkId, shortUrl: shortCode, url });

@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { deleteUrl, getUrl, openUrl, postUrl } from "../controllers/urls.controller.js";
-import { validateSchema } from "../middlewares/validateSchema.middleware.js";
+import { validateSchema } from "../middlewares/validateSchema.middlewares.js";
 import { postUrlSchema } from "../schemas/urls.schemas.js";
-import { authValidation } from "../middlewares/auth.middleware.js";
+import { authValidation } from "../middlewares/auth.middlewares.js";
+import { shortUrlValidation } from "../middlewares/urls.middlewares.js";
 
 const urlsRouter = Router();
 
 urlsRouter.post("/urls/shorten", authValidation, validateSchema(postUrlSchema), postUrl);
-urlsRouter.get("/urls/:id", getUrl);
+urlsRouter.get("/urls/:id", shortUrlValidation, getUrl);
 urlsRouter.get("/urls/open/:shortUrl", openUrl);
 urlsRouter.delete("/urls/:id", authValidation, deleteUrl)
 

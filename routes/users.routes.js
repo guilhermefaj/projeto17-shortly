@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { getUserProfile, signIn, signUp } from "../controllers/users.controller.js";
-import { validateSchema } from "../middlewares/validateSchema.middleware.js";
+import { validateSchema } from "../middlewares/validateSchema.middlewares.js";
 import { signInSchema, signUpSchema } from "../schemas/users.schemas.js";
 import { SignInEmailValidation, SignUpEmailValidation, passwordValidation } from "../middlewares/users.middlewares.js";
-import { authValidation } from "../middlewares/auth.middleware.js";
+import { authValidation } from "../middlewares/auth.middlewares.js";
 
 const usersRouter = Router();
 

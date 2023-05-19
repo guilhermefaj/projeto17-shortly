@@ -42,11 +42,3 @@ export async function passwordValidation(req, res, next) {
         res.status(500).send(err.message);
     }
 }
-
-// export async function passwordValidation(req, res, next) {
-//     try {
-
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// }
