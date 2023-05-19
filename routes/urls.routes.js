@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUrl, getUrl, openUrl, postUrl } from "../controllers/urls.controlles.js";
+import { deleteUrl, getUrl, openUrl, postUrl } from "../controllers/urls.controller.js";
 import { validateSchema } from "../middlewares/validateSchema.middleware.js";
 import { postUrlSchema } from "../schemas/urls.schemas.js";
 import { authValidation } from "../middlewares/auth.middleware.js";
