@@ -30,7 +30,6 @@ export async function postUrl(req, res) {
 
 
 export async function getUrl(req, res) {
-
     try {
         const result = res.locals.result;
 
@@ -43,19 +42,8 @@ export async function getUrl(req, res) {
 
 
 export async function openUrl(req, res) {
-    const { shortUrl } = req.params;
-
     try {
-        const linkResult = await db.query(
-            `SELECT "url", "linkId" 
-             FROM links 
-             WHERE "shortCode" = $1`,
-            [shortUrl]
-        );
-
-        if (linkResult.rows.length === 0) {
-            return res.status(404).send("URL encurtada não encontrada");
-        }
+        const linkResult = res.locals.linkResult;
 
         const { url } = linkResult.rows[0];
 

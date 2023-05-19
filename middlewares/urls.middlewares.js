@@ -21,3 +21,25 @@ export async function shortUrlValidation(req, res, next) {
         res.status(500).send(err.message);
     }
 }
+
+export async function openUrlValidation(req, res, next) {
+    const { shortUrl } = req.params;
+    try {
+        const linkResult = await db.query(
+            `SELECT "url", "linkId" 
+             FROM links 
+             WHERE "shortCode" = $1`,
+            [shortUrl]
+        );
+
+        if (linkResult.rows.length === 0) {
+            return res.status(404).send("URL encurtada não encontrada");
+        }
+
+        res.locals.linkResult = linkResult;
+
+        next();
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
