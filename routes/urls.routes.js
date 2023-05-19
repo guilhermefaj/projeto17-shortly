@@ -3,14 +3,14 @@ import { deleteUrl, getUrl, openUrl, postUrl } from "../controllers/urls.control
 import { validateSchema } from "../middlewares/validateSchema.middlewares.js";
 import { postUrlSchema } from "../schemas/urls.schemas.js";
 import { authValidation } from "../middlewares/auth.middlewares.js";
-import { openUrlValidation, shortUrlValidation } from "../middlewares/urls.middlewares.js";
+import { deleteUrlValidation, openUrlValidation, shortUrlValidation } from "../middlewares/urls.middlewares.js";
 
 const urlsRouter = Router();
 
 urlsRouter.post("/urls/shorten", authValidation, validateSchema(postUrlSchema), postUrl);
 urlsRouter.get("/urls/:id", shortUrlValidation, getUrl);
 urlsRouter.get("/urls/open/:shortUrl", openUrlValidation, openUrl);
-urlsRouter.delete("/urls/:id", authValidation, deleteUrl)
+urlsRouter.delete("/urls/:id", authValidation, deleteUrlValidation, deleteUrl);
 
 
 export default urlsRouter;

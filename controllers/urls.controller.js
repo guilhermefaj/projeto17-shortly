@@ -71,16 +71,7 @@ export async function deleteUrl(req, res) {
     const userId = res.locals.session.userId;
 
     try {
-        const result = await db.query(
-            `SELECT "userId" 
-             FROM links 
-             WHERE "linkId" = $1`,
-            [id]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).send("URL encurtada não encontrada");
-        }
+        const result = res.locals.result;
 
         const { userId: linkUserId } = result.rows[0];
 
